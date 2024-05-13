@@ -1,11 +1,11 @@
 package Construction;
-// Aplicacion del patron singleton Entrega 2
+// Aplicacion del patron singleton entrega 1
 public class RestaurantManager {
     private static RestaurantManager instance;
     private RestaurantFactory factory;
 
     private RestaurantManager() {
-        factory = new RestaurantFactory();
+        this.factory = new RestaurantFactory();
     }
 
     public static synchronized RestaurantManager getInstance() {
