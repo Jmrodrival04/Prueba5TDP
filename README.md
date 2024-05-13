@@ -1,4 +1,4 @@
-Este es mi repositorio de github:
+Este es mi repositorio de github:https://github.com/Jmrodrival04/Prueba5TDP.git
 
 El programa es un sistema de gestión de restaurantes que permite a los usuarios interactuar con diferentes tipos de restaurantes, realizar reservas y seleccionar estrategias de servicio. Aquí está una explicación detallada del funcionamiento del programa:
 
