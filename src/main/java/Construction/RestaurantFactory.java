@@ -1,5 +1,5 @@
 package Construction;
-
+// Aplicacion del Patron Factory Entrega 1
 public class RestaurantFactory {
     public Restaurant getRestaurant(String type) {
         switch (type.toLowerCase()) {

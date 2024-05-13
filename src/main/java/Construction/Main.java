@@ -1,27 +1,57 @@
 package Construction;
+
+import java.util.Scanner;
+
 public class Main {
     public static void main(String[] args) {
-        // Obtener la instancia del administrador de restaurantes (Singleton)
         RestaurantManager manager = RestaurantManager.getInstance();
+        Scanner scanner = new Scanner(System.in);
+        Restaurant restaurant = null; // Inicializando a null
 
-        // Crear diferentes tipos de restaurantes
-        Restaurant fastFoodRestaurant = manager.createRestaurant("fastfood");
-        Restaurant themeRestaurant = manager.createRestaurant("theme");
-        Restaurant fineDiningRestaurant = manager.createRestaurant("finedining");
+        while (true) {
+            System.out.println("Welcome to the Restaurant Management System!");
+            System.out.println("Select an option:");
+            System.out.println("1. Create Fast Food Restaurant");
+            System.out.println("2. Create Theme Restaurant");
+            System.out.println("3. Create Fine Dining Restaurant");
+            System.out.println("4. Exit");
 
-        // Configurar estrategias de servicio para cada restaurante
-        fastFoodRestaurant.setServiceStrategy(new CasualServiceStrategy());
-        themeRestaurant.setServiceStrategy(new ThemedServiceStrategy());
-        fineDiningRestaurant.setServiceStrategy(new FineDiningServiceStrategy());
+            System.out.print("Enter your choice: ");
+            int choice = scanner.nextInt();
 
-        // Servir clientes en cada restaurante
-        System.out.println("Fast Food Restaurant:");
-        fastFoodRestaurant.serveCustomers();
+            switch (choice) {
+                case 1:
+                    restaurant = manager.createRestaurant("fastfood");
+                    restaurant.setServiceStrategy(new CasualServiceStrategy());
+                    System.out.println("Fast Food Restaurant created and strategy set.");
+                    break;
+                case 2:
+                    restaurant = manager.createRestaurant("theme");
+                    restaurant.setServiceStrategy(new ThemedServiceStrategy());
+                    System.out.println("Theme Restaurant created and strategy set.");
+                    break;
+                case 3:
+                    restaurant = manager.createRestaurant("finedining");
+                    restaurant.setServiceStrategy(new FineDiningServiceStrategy());
+                    System.out.println("Fine Dining Restaurant created and strategy set.");
+                    break;
+                case 4:
+                    System.out.println("Exiting the system.");
+                    scanner.close();
+                    return;
+                default:
+                    System.out.println("Invalid choice, please try again.");
+                    continue; // Continúa al próximo ciclo del bucle si la elección no es válida
+            }
 
-        System.out.println("Theme Restaurant:");
-        themeRestaurant.serveCustomers();
-
-        System.out.println("Fine Dining Restaurant:");
-        fineDiningRestaurant.serveCustomers();
+            // Comprobación de seguridad para asegurar que restaurant no sea null
+            if (restaurant != null) {
+                System.out.println("Serving customers at the restaurant:");
+                restaurant.serveCustomers();
+                System.out.println();
+            } else {
+                System.out.println("No restaurant was created, please make a valid selection.");
+            }
+        }
     }
 }

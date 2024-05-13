@@ -1,4 +1,5 @@
 package Construction;
+// Aplicacion del patron singleton Entrega 2
 public class RestaurantManager {
     private static RestaurantManager instance;
     private RestaurantFactory factory;
