@@ -1,5 +1,4 @@
 package Construction;
-
 public class FastFoodRestaurant implements Restaurant {
     private ServiceStrategy strategy;
 
