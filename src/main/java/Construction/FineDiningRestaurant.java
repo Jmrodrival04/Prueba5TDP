@@ -1,5 +1,4 @@
 package Construction;
-
 public class FineDiningRestaurant implements Restaurant {
     private ServiceStrategy strategy;
 
