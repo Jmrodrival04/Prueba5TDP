@@ -1,5 +1,5 @@
 package org.example;
-
+// Patron Singleton de la entrega 3
 public class RestaurantManager {
     private static RestaurantManager instance;
     private RestaurantFactory factory;
