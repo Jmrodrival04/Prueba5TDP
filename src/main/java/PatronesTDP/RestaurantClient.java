@@ -1,4 +1,4 @@
-package Construction;
+package PatronesTDP;
 
 public class RestaurantClient implements Observer {
     private String name;

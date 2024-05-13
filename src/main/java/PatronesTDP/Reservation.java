@@ -1,4 +1,4 @@
-package Construction;
+package PatronesTDP;
 
 public class Reservation {
     private String restaurantType;

@@ -1,6 +1,5 @@
-package Construction;
-
-public class ThemeRestaurant implements Restaurant {
+package PatronesTDP;
+public class FastFoodRestaurant implements Restaurant {
     private ServiceStrategy strategy;
 
     @Override

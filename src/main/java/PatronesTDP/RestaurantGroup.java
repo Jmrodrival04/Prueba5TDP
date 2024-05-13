@@ -1,4 +1,4 @@
-package Construction;
+package PatronesTDP;
 // Aplicacion del patron Composite Entrega 2
 import java.util.ArrayList;
 import java.util.List;

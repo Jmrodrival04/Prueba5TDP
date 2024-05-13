@@ -1,4 +1,4 @@
-package Construction;
+package PatronesTDP;
 //Implementacio del Patron Adapter entrega 2
 public class ReservationAdapter implements ReservationSystem {
     private ExternalReservationSystem externalSystem;

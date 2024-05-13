@@ -1,4 +1,4 @@
-package Construction;
+package PatronesTDP;
 
 public interface Restaurant {
     void serveCustomers();

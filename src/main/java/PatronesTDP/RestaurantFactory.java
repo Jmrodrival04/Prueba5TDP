@@ -1,4 +1,4 @@
-package Construction;
+package PatronesTDP;
 // Aplicacion del Patron Factory Entrega 1
 public class RestaurantFactory {
     public Restaurant getRestaurant(String type) {

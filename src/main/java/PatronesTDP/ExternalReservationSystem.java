@@ -1,4 +1,4 @@
-package Construction;
+package PatronesTDP;
 
 public class ExternalReservationSystem {
     public void bookTable(int tableId) {

@@ -1,0 +1,131 @@
+@startuml
+
+class Main {
+    + main(String[]): void
+}
+
+class CasualServiceStrategy {
+    + serve(): void
+}
+
+class FastFoodRestaurant {
+    - strategy: ServiceStrategy
+    + serveCustomers(): void
+    + setServiceStrategy(ServiceStrategy): void
+}
+
+class FineDiningRestaurant {
+    - strategy: ServiceStrategy
+    + serveCustomers(): void
+    + setServiceStrategy(ServiceStrategy): void
+}
+
+class FineDiningServiceStrategy {
+    + serve(): void
+}
+
+class MenuUpdates {
+    - observers: List<Observer>
+    + registerObserver(Observer): void
+    + removeObserver(Observer): void
+    + notifyObservers(String): void
+    + notifyObservers(): void
+}
+
+interface Observer {
+    + update(String): void
+}
+
+class ReservationAdapter {
+    - externalSystem: ExternalReservationSystem
+    + reserveTable(int): void
+}
+
+interface ReservationSystem {
+    + reserveTable(int): void
+}
+
+interface Restaurant {
+    + serveCustomers(): void
+    + setServiceStrategy(ServiceStrategy): void
+}
+
+class RestaurantClient {
+    - name: String
+    + RestaurantClient(String)
+    + update(String): void
+}
+
+class RestaurantFactory {
+    + getRestaurant(String): Restaurant
+}
+
+class RestaurantGroup {
+    - restaurants: List<Restaurant>
+    - serviceStrategy: ServiceStrategy
+    + serveCustomers(): void
+    + addRestaurant(Restaurant): void
+    + setServiceStrategy(ServiceStrategy): void
+}
+
+class RestaurantManager {
+    - instance: RestaurantManager
+    - factory: RestaurantFactory
+    + getInstance(): RestaurantManager
+    + createRestaurant(String): Restaurant
+}
+
+interface ServiceStrategy {
+    + serve(): void
+}
+
+class ThemedServiceStrategy {
+    + serve(): void
+}
+
+class ThemeRestaurant {
+    - strategy: ServiceStrategy
+    + serveCustomers(): void
+    + setServiceStrategy(ServiceStrategy): void
+}
+
+class ExternalReservationSystem {
+    + bookTable(int): void
+}
+
+class Reservation {
+    - restaurantType: String
+    - tableId: int
+    - clientName: String
+    + Reservation(String, int, String)
+    + getRestaurantType(): String
+    + getTableId(): int
+    + getClientName(): String
+}
+
+Main --> RestaurantManager
+Main --> RestaurantClient
+Main --> ReservationAdapter
+Main --> MenuUpdates
+
+ReservationAdapter --> ExternalReservationSystem
+
+RestaurantManager --> RestaurantFactory
+
+RestaurantClient --> Observer
+
+RestaurantFactory --> FastFoodRestaurant
+RestaurantFactory --> FineDiningRestaurant
+RestaurantFactory --> ThemeRestaurant
+
+FastFoodRestaurant --> ServiceStrategy
+FineDiningRestaurant --> ServiceStrategy
+ThemeRestaurant --> ServiceStrategy
+
+MenuUpdates --> Observer
+
+Reservation --> Restaurant
+
+RestaurantGroup --> Restaurant
+
+@enduml

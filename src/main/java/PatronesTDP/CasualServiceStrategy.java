@@ -1,4 +1,4 @@
-package Construction;
+package PatronesTDP;
 
 public class CasualServiceStrategy implements ServiceStrategy {
     @Override

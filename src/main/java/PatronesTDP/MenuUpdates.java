@@ -1,4 +1,4 @@
-package Construction;
+package PatronesTDP;
 //Implementacion del Patron Observer entrega 2
 import java.util.ArrayList;
 import java.util.List;

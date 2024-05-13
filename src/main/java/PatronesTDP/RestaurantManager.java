@@ -1,4 +1,4 @@
-package Construction;
+package PatronesTDP;
 // Aplicacion del patron singleton entrega 1
 public class RestaurantManager {
     private static RestaurantManager instance;
