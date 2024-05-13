@@ -1,56 +1,140 @@
 package Construction;
-
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        RestaurantManager manager = RestaurantManager.getInstance();
         Scanner scanner = new Scanner(System.in);
-        Restaurant restaurant = null; // Inicializando a null
+        RestaurantManager restaurantManager = RestaurantManager.getInstance();
 
-        while (true) {
-            System.out.println("Welcome to the Restaurant Management System!");
-            System.out.println("Select an option:");
-            System.out.println("1. Create Fast Food Restaurant");
-            System.out.println("2. Create Theme Restaurant");
-            System.out.println("3. Create Fine Dining Restaurant");
-            System.out.println("4. Exit");
+        System.out.println("Bienvenido al sistema de gestión de restaurantes");
 
-            System.out.print("Enter your choice: ");
+        List<Reservation> reservations = new ArrayList<>();
+
+        boolean exit = false;
+        while (!exit) {
+            System.out.println("\nMenú:");
+            System.out.println("1. Seleccionar tipo de restaurante");
+            System.out.println("2. Ver reservas");
+            System.out.println("3. Salir");
+            System.out.print("Ingrese el número correspondiente a la opción deseada: ");
             int choice = scanner.nextInt();
 
             switch (choice) {
                 case 1:
-                    restaurant = manager.createRestaurant("fastfood");
-                    restaurant.setServiceStrategy(new CasualServiceStrategy());
-                    System.out.println("Fast Food Restaurant created and strategy set.");
+                    selectRestaurant(scanner, restaurantManager, reservations);
                     break;
                 case 2:
-                    restaurant = manager.createRestaurant("theme");
-                    restaurant.setServiceStrategy(new ThemedServiceStrategy());
-                    System.out.println("Theme Restaurant created and strategy set.");
+                    viewReservations(reservations);
                     break;
                 case 3:
-                    restaurant = manager.createRestaurant("finedining");
-                    restaurant.setServiceStrategy(new FineDiningServiceStrategy());
-                    System.out.println("Fine Dining Restaurant created and strategy set.");
+                    exit = true;
+                    System.out.println("Saliendo del programa...");
                     break;
-                case 4:
-                    System.out.println("Exiting the system.");
-                    scanner.close();
-                    return;
                 default:
-                    System.out.println("Invalid choice, please try again.");
-                    continue; // Continúa al próximo ciclo del bucle si la elección no es válida
+                    System.out.println("Opción no válida. Inténtelo de nuevo.");
             }
+        }
 
-            // Comprobación de seguridad para asegurar que restaurant no sea null
-            if (restaurant != null) {
-                System.out.println("Serving customers at the restaurant:");
-                restaurant.serveCustomers();
-                System.out.println();
-            } else {
-                System.out.println("No restaurant was created, please make a valid selection.");
+        scanner.close();
+    }
+
+    private static void selectRestaurant(Scanner scanner, RestaurantManager restaurantManager, List<Reservation> reservations) {
+        System.out.println("\nSeleccione el tipo de restaurante:");
+        System.out.println("1. Comida Rápida");
+        System.out.println("2. Alta Cocina");
+        System.out.println("3. Restaurante Temático");
+        System.out.print("Ingrese el número correspondiente: ");
+        int restaurantTypeChoice = scanner.nextInt();
+
+        Restaurant restaurant = null;
+        String restaurantType = "";
+
+        switch (restaurantTypeChoice) {
+            case 1:
+                restaurant = restaurantManager.createRestaurant("fastfood");
+                restaurantType = "Comida Rápida";
+                break;
+            case 2:
+                restaurant = restaurantManager.createRestaurant("finedining");
+                restaurantType = "Alta Cocina";
+                break;
+            case 3:
+                restaurant = restaurantManager.createRestaurant("theme");
+                restaurantType = "Restaurante Temático";
+                break;
+            default:
+                System.out.println("Opción no válida.");
+                return;
+        }
+
+        System.out.println("Ha seleccionado: " + restaurantType);
+
+        // Reservar una mesa
+        System.out.print("Ingrese su nombre para la reserva: ");
+        String clientName = scanner.next();
+        System.out.print("Ingrese el número de mesa que desea reservar: ");
+        int tableId = scanner.nextInt();
+
+        ExternalReservationSystem externalSystem = new ExternalReservationSystem();
+        ReservationAdapter reservationAdapter = new ReservationAdapter(externalSystem);
+        reservationAdapter.reserveTable(tableId);
+
+        reservations.add(new Reservation(restaurantType, tableId, clientName));
+
+        // Configurar la estrategia de servicio para el restaurante
+        System.out.println("\nSeleccione la estrategia de servicio:");
+        System.out.println("1. Servicio Casual");
+        System.out.println("2. Alta Cocina");
+        System.out.println("3. Servicio Temático");
+        System.out.print("Ingrese el número correspondiente: ");
+        int serviceStrategyChoice = scanner.nextInt();
+
+        ServiceStrategy serviceStrategy = null;
+        String serviceStrategyType = "";
+
+        switch (serviceStrategyChoice) {
+            case 1:
+                serviceStrategy = new CasualServiceStrategy();
+                serviceStrategyType = "Servicio Casual";
+                break;
+            case 2:
+                serviceStrategy = new FineDiningServiceStrategy();
+                serviceStrategyType = "Alta Cocina";
+                break;
+            case 3:
+                serviceStrategy = new ThemedServiceStrategy();
+                serviceStrategyType = "Servicio Temático";
+                break;
+            default:
+                System.out.println("Opción no válida. Se utilizará el servicio predeterminado.");
+                serviceStrategy = new CasualServiceStrategy();
+                serviceStrategyType = "Servicio Casual";
+                break;
+        }
+
+        System.out.println("Ha seleccionado: " + serviceStrategyType);
+
+        restaurant.setServiceStrategy(serviceStrategy);
+
+        // Crear un cliente de restaurante
+        RestaurantClient client = new RestaurantClient(clientName);
+        MenuUpdates menuUpdates = new MenuUpdates();
+        menuUpdates.registerObserver(client);
+
+        // Interacción con el restaurante
+        System.out.println("\nBienvenido " + clientName + ". ¡Disfrute de su comida en " + restaurantType + " con " + serviceStrategyType + "!");
+        restaurant.serveCustomers();
+    }
+
+    private static void viewReservations(List<Reservation> reservations) {
+        System.out.println("\nReservas:");
+        if (reservations.isEmpty()) {
+            System.out.println("No hay reservas.");
+        } else {
+            for (Reservation reservation : reservations) {
+                System.out.println("- Tipo de Restaurante: " + reservation.getRestaurantType() + ", Mesa: " + reservation.getTableId() + ", Cliente: " + reservation.getClientName());
             }
         }
     }

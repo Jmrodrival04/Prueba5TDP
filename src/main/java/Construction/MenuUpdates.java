@@ -14,6 +14,11 @@ public class MenuUpdates implements Subject {
         observers.remove(observer);
     }
 
+    @Override
+    public void notifyObservers() {
+
+    }
+
     public void notifyObservers(String message) {
         for (Observer observer : observers) {
             observer.update(message);
